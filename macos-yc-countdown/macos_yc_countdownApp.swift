@@ -1,17 +1,21 @@
-//
-//  macos_yc_countdownApp.swift
-//  macos-yc-countdown
-//
-//  Created by Vladimir de Turckheim on 13/02/2026.
-//
-
 import SwiftUI
 
 @main
 struct macos_yc_countdownApp: App {
+    @StateObject private var viewModel = CountdownViewModel()
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        MenuBarExtra {
+            CountdownMenuView(viewModel: viewModel)
+        } label: {
+            HStack(spacing: 4) {
+                Image(nsImage: MenuBarIcon.create())
+                if viewModel.displayMode == .showInMenuBar {
+                    Text(viewModel.countdownText)
+                        .monospacedDigit()
+                }
+            }
         }
+        .menuBarExtraStyle(.window)
     }
 }
