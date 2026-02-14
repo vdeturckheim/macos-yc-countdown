@@ -5,7 +5,7 @@ struct CountdownMenuView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("YC S26 Demo Day")
+            Text("YC X26 Demo Day")
                 .font(.headline)
 
             Text(viewModel.countdownText)
