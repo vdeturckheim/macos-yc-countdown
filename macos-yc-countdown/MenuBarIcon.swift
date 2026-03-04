@@ -15,7 +15,7 @@ enum MenuBarIcon {
             ]
             
             let text = "Y"
-            let textRect = CGRect(x: 0, y: 2, width: size, height: size)
+            let textRect = CGRect(x: 0, y: 0, width: size, height: size)
             text.draw(in: textRect, withAttributes: attributes)
 
             return true

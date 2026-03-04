@@ -15,17 +15,32 @@ struct CountdownMenuView: View {
             Divider()
 
             Picker("Display Mode", selection: $viewModel.displayMode) {
-                Text("Show countdown in menu bar").tag(DisplayMode.showInMenuBar)
-                Text("Show icon only").tag(DisplayMode.showInDropdown)
+                Text("Show countdown in menu bar")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .tag(DisplayMode.showInMenuBar)
+                Text("Show icon only")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .tag(DisplayMode.showInDropdown)
             }
             .pickerStyle(.radioGroup)
 
             Picker("Countdown Format", selection: $viewModel.countdownFormat) {
-                Text("Full (123d 04h 30m 15s)").tag(CountdownFormat.full)
-                Text("Days only (123 days)").tag(CountdownFormat.daysOnly)
-                Text("Hours only (2,956 hours)").tag(CountdownFormat.hoursOnly)
+                Text("Full (123d 04h 30m 15s)")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .tag(CountdownFormat.full)
+                Text("Days only (123 days)")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .tag(CountdownFormat.daysOnly)
+                Text("Hours only (2,956 hours)")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .tag(CountdownFormat.hoursOnly)
             }
             .pickerStyle(.radioGroup)
+
+            Toggle("Launch at Login", isOn: Binding(
+                get: { viewModel.launchAtLoginEnabled },
+                set: { _ in viewModel.toggleLaunchAtLogin() }
+            ))
 
             Divider()
 
@@ -35,6 +50,6 @@ struct CountdownMenuView: View {
             .keyboardShortcut("q")
         }
         .padding()
-        .frame(width: 280)
+        .frame(width: 320)
     }
 }

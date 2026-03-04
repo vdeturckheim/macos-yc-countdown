@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import ServiceManagement
 import SwiftUI
 
 enum DisplayMode: String {
@@ -15,6 +16,7 @@ enum CountdownFormat: String, CaseIterable {
 
 class CountdownViewModel: ObservableObject {
     @Published var countdownText: String = ""
+    @Published var launchAtLoginEnabled: Bool = false
     @Published var displayMode: DisplayMode {
         didSet {
             UserDefaults.standard.set(displayMode.rawValue, forKey: "displayMode")
@@ -45,6 +47,7 @@ class CountdownViewModel: ObservableObject {
         self.displayMode = DisplayMode(rawValue: saved) ?? .showInMenuBar
         let savedFormat = UserDefaults.standard.string(forKey: "countdownFormat") ?? CountdownFormat.full.rawValue
         self.countdownFormat = CountdownFormat(rawValue: savedFormat) ?? .full
+        refreshLaunchAtLoginStatus()
         updateCountdown()
         startTimer()
     }
@@ -84,6 +87,23 @@ class CountdownViewModel: ObservableObject {
             let formatted = formatter.string(from: NSNumber(value: totalHours)) ?? "\(totalHours)"
             countdownText = "\(formatted) hours"
         }
+    }
+
+    func refreshLaunchAtLoginStatus() {
+        launchAtLoginEnabled = SMAppService.mainApp.status == .enabled
+    }
+
+    func toggleLaunchAtLogin() {
+        do {
+            if launchAtLoginEnabled {
+                try SMAppService.mainApp.unregister()
+            } else {
+                try SMAppService.mainApp.register()
+            }
+        } catch {
+            print("Failed to toggle launch at login: \(error)")
+        }
+        refreshLaunchAtLoginStatus()
     }
 
     deinit {
